@@ -1,0 +1,104 @@
+{
+	"name": "genricdtafromazuretosf",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEachFILE",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@createArray('customer','organisation','people')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy datafrom adls_sf",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "SnowflakeV2Sink",
+									"importSettings": {
+										"type": "SnowflakeImportCopyCommand",
+										"storageIntegration": "ADLS_SF_EXT"
+									}
+								},
+								"enableStaging": true,
+								"stagingSettings": {
+									"linkedServiceName": {
+										"referenceName": "linkedServiceblob",
+										"type": "LinkedServiceReference"
+									},
+									"path": "satging"
+								},
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "generic_data_adls",
+									"type": "DatasetReference",
+									"parameters": {
+										"container": "landing",
+										"path": {
+											"value": "@concat(item())",
+											"type": "Expression"
+										},
+										"file": {
+											"value": "@concat(item(),'.csv')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "genericdata_SL",
+									"type": "DatasetReference",
+									"parameters": {
+										"SCHEMA": "DE_SCHEMA",
+										"TABLE": {
+											"value": "@toUpper(item())",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-10-02T14:00:37Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

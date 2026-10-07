@@ -1,0 +1,15 @@
+{
+	"name": "p-de-train",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f14f0e3d-7762-4fae-9297-10949515ea71",
+		"tenantId": "4918b229-bd19-44ca-b590-d8a045f2273b"
+	}
+}

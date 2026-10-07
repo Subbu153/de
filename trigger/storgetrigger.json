@@ -1,0 +1,32 @@
+{
+	"name": "storgetrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Generic cp",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"conatainer": "landing",
+					"path": "products/2026/10/06",
+					"file": "products.csv",
+					"schema": "DE_SCHEMA",
+					"table": "PRODUCTS"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/landing/blobs/products",
+			"blobPathEndsWith": ".csv",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/51c70129-761c-4119-9c45-07f54c3d26da/resourceGroups/train_india/providers/Microsoft.Storage/storageAccounts/snowflakestrg2026",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
